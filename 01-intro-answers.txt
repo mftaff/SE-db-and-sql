@@ -1,0 +1,32 @@
+remove duplicates in a query response:
+ORM: Posts.all.delete_duplicates()
+SQL: SELECT * FROM post GROUP_BY title HAVING count(*) > 1;
+
+filter records using inequalities, pattern matching, ranges, and boolean logic:
+ORM: record = record1 if record1 < record 2
+SQL: SELECT record1 WHERE record1 < record2;
+
+sort records in a particular order:
+ORM: Posts.all.sort('desc')
+SQL: SELECT * from post ORDER_BY DESC;
+
+limit the number of records returned:
+ORM: Posts.all.slice(0..n)
+SQL: SELECT * FROM post LIMIT n;
+
+group records into sections:
+ORM: POSTS.all.each { |p| sections[p.title] << p }
+SQL: SELECT * FROM post GROUP_BY title;
+
+perform calculations using aggregate functions:
+ORM: Posts.all.each {|p| min = p if p.id < min.id }
+SQL: SELECT MIN(id) FROM post;
+
+join tables using cross join, inner join, and outer join:
+ORM: Posts.all.join
+ORM: Posts.all.inner_join
+ORM: Posts.all.outer_join
+
+SQL cross: SELECT * FROM postA CROSS JOIN postB;
+SQL inner: SELECT * FROM postA [INNER] JOIN postB USING (id);
+SQL outer: SELECT * FROM postA LEFT OUTER JOIN postB;
