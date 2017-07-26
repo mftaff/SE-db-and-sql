@@ -2,6 +2,8 @@ require 'sqlite3'
 
 module Selection
     def find(*ids)
+        return "ERROR! Incorrect Input" unless validate_positive_integer(ids)
+        
         if ids.length == 1
             find_one(ids.first)
         else
@@ -15,6 +17,8 @@ module Selection
     end
     
     def find_one(id)
+        return "ERROR! Incorrect Input" unless validate_positive_integer([id])
+        
         row = connection.get_first_row <<-SQL
             SELECT #{columns.join ","} FROM #{table}
             WHERE id = #{id};
@@ -24,6 +28,8 @@ module Selection
     end
     
     def find_by(attribute, value)
+        return "ERROR! Incorrect Input" unless validate_string(attribute)
+        
         row = connection.get_first_row <<-SQL
             SELECT #{columns.join ","} FROM #{table}
             WHERE #{attribute} = #{BlocRecord::Utility.sql_strings(value)};
@@ -32,7 +38,21 @@ module Selection
         init_object_from_row(row)
     end
     
+    def find_each(attribute, *values)
+        return "ERROR! Incorrect Input" unless validate_string(attribute)
+        values_string = values.map { |val| BlocRecord::Utility.sql_strings(value) }.join ","
+        
+        rows = connection.execute <<-SQL
+            SELECT #{columns.join ","} FROM #{table}
+            WHERE #{attribute} IN (#{values_string});
+        SQL
+        
+        block_given? ? rows.each { |row| yield } : rows_to_array(rows)
+    end
+    
     def take(num=1)
+        return "ERROR! Incorrect Input" unless validate_positive_integer(num)
+        
         if num > 1
             rows = connection.execute <<-SQL
                 SELECT #{columns.join ","} FROM #{table}
@@ -93,5 +113,17 @@ module Selection
     
     def rows_to_array(rows)
         rows.map { |row| new(Hash[columns.zip(row)]) }
+    end
+    
+    # Added for assignment 03
+    def validate_positive_integer(datum)
+        datum.each { |d| return false if (!d.is_a? Integer) || d <= 0 }
+        true
+    end
+    
+    # Added for assignment 03
+    def validate_string(data)
+        return false if not data.is_a? String
+        true
     end
 end
