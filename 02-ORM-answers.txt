@@ -1,0 +1,33 @@
+1) A Ruby gem is a standerdized way of accessing libraries or 'applets' to 
+add functionality to your application. The usefullness of this is quite obvious as
+it allows you to import functionality easily into an app without having to write everything
+new every time.
+
+2) The difference between lazy and eager loading is that with lazy loading we wait until 
+an operation is requested before running said operation. In contrast, eager loading
+runs operations at runtime (or sometime before the user asks) in anticipation of
+saving time later. The time needed is always the same, so the main trick is 
+deciding when to spend that time.
+
+3) The difference between CREATE TABLE and INSERT INTO is CREATE TABLE tells SQL
+to make a new database table, whereas INSERT INTO tells SQL to add new data 
+(rows, columns) to an existing table.
+
+4) The difference between extend and include is: extend adds class methods to a file
+while include adds instance methods to a class. This means if you want to have access 
+to the actual class you will need to extend it to a module. 
+
+5) to save data (or manipulate any data) you can only do that by dealing with an
+instance. That is the whole point of an instance. If you tried to save data with a 
+class method, it would either fail or add data to the entire class method, which 
+you would not want.
+
+6) the query would look like: 
+
+UPDATE character 
+SET "character_name" = "Jar-Jar Binks", "star_rating" = 1 
+WHERE id = 1;
+
+7) We will need to send a call to the database to retrieve this information, as 
+we are no longer storing the data in local variables.
+
